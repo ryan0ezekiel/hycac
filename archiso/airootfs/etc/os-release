@@ -1,0 +1,10 @@
+NAME="HYCAC"
+PRETTY_NAME="HYCAC"
+ID=hycac
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://cachyos.org"
+SUPPORT_URL="https://discuss.cachyos.org"
+BUG_REPORT_URL="https://github.com/cachyos"
+LOGO=hycac

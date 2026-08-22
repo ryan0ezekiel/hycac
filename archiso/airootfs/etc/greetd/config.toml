@@ -1,0 +1,7 @@
+[terminal]
+vt = 1
+
+[default_session]
+# Autologin straight into niri - same setup as the source machine.
+command = "env XDG_SESSION_TYPE=wayland XDG_CURRENT_DESKTOP=niri XDG_SESSION_DESKTOP=niri /usr/bin/niri-session"
+user = "hycac"

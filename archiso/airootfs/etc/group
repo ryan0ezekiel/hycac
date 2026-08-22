@@ -1,0 +1,16 @@
+root:x:0:root
+sys:x:3:bin,hycac
+network:x:90:hycac
+power:x:98:hycac
+adm:x:999:hycac
+wheel:x:998:hycac
+uucp:x:987:hycac
+optical:x:990:hycac
+rfkill:x:983:hycac
+video:x:986:hycac
+storage:x:988:hycac
+audio:x:995:hycac
+users:x:985:hycac
+nopasswdlogin:x:966:hycac
+autologin:x:967:hycac
+hycac:x:1000:

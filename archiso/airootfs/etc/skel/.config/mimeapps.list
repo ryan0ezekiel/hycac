@@ -1,6 +1,6 @@
 [Default Applications]
 application/schema+json=dev.zed.Zed.desktop
-application/pdf=okularApplication_pdf.desktop
+application/pdf=org.gnome.Evince.desktop
 text/markdown=dev.zed.Zed.desktop
 x-scheme-handler/fdm=freedownloadmanager_fdm_up.desktop
 x-scheme-handler/magnet=freedownloadmanager_magnet_up.desktop
@@ -9,5 +9,5 @@ inode/directory=org.gnome.Nautilus.desktop
 
 [Added Associations]
 application/schema+json=dev.zed.Zed.desktop;
-application/pdf=okularApplication_pdf.desktop;
+application/pdf=org.gnome.Evince.desktop;
 text/markdown=dev.zed.Zed.desktop;

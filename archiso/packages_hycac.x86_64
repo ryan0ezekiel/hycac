@@ -109,7 +109,6 @@ noto-fonts-emoji
 ttf-dejavu
 ttf-liberation
 ttf-jetbrains-mono
-ttf-meslo-nerd
 
 # --- applications from the source machine ---
 alacritty
@@ -131,7 +130,6 @@ gnome-disk-utility
 gnome-software
 gparted
 hdparm
-helium-browser-bin
 hwinfo
 hwloc
 lsscsi
@@ -141,7 +139,6 @@ mtools
 mpv
 nautilus
 octopi
-okular
 opencode
 pavucontrol
 pv
@@ -152,7 +149,6 @@ sg3_utils
 shelly
 smartmontools
 superfile
-telegram-desktop
 testdisk
 unrar
 unzip
@@ -167,3 +163,4 @@ ffmpegthumbnailer
 # --- flatpak runtime support ---
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
+evince

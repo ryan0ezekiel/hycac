@@ -23,11 +23,17 @@ SKEL="${REPO}/archiso/airootfs/etc/skel"
 DST="${SKEL}/.config"
 OVDST="${REPO}/archiso/airootfs/usr/share/hycac/skel-overrides/.config"
 
-OVERRIDE_DIRS=(niri noctalia fish alacritty)
+# NOTE: Noctalia v5 keeps ALL settings in ~/.local/state/noctalia/settings.toml.
+# It has no ~/.config/noctalia directory - that was a v4 leftover on the source
+# machine and must NOT be shipped or synced.
+OVERRIDE_DIRS=(niri fish alacritty)
 DIRS=(foot shelly micro mpv gtk-3.0 gtk-4.0)
 FILES=(starship.toml mimeapps.list user-dirs.dirs user-dirs.locale)
 
 mkdir -p "${DST}" "${OVDST}"
+
+# purge any stale v4-era noctalia config from earlier iterations
+rm -rf "${OVDST}/noctalia" "${DST}/noctalia"
 
 for d in "${OVERRIDE_DIRS[@]}"; do
     if [ -d "${SRC}/${d}" ]; then
@@ -76,12 +82,6 @@ grep -rl '/home/helheim' \
     "${REPO}/archiso/airootfs/usr/share/hycac/skel-overrides" \
     --exclude-dir=.git 2>/dev/null \
     | xargs -r sed -i 's#/home/helheim/#/home/hycac/#g'
-
-NOCT_CFG="${DST}/noctalia/config.toml"
-[ -f "${NOCT_CFG}" ] && sed -i \
-    -e 's#^avatar_path = .*#avatar_path = "/usr/share/icons/hicolor/256x256/apps/hycac.png"#' \
-    -e 's#^directory = .*#directory = "/usr/share/backgrounds/hycac"#' \
-    "${NOCT_CFG}"
 
 NOCT_SET="${NDST}/settings.toml"
 if [ -f "${NOCT_SET}" ]; then

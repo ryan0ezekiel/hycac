@@ -2,7 +2,10 @@
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
     spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
-    spawn-at-startup "noctalia" // Noctalia desktop shell (v5)
+    // Noctalia desktop shell (v5) with boot-race resilience: on a cold live
+    // boot the plugin materializer needs the network, which may lag behind
+    // niri. Retry up to 30x (60s) instead of dying on first attempt.
+    spawn-sh-at-startup "for i in $(seq 1 30); do /usr/bin/noctalia && break; sleep 2; done"
     // Grant X11 display access to root and the local user on login.
     // Fixes "Authorization required" for root-elevated GUI apps (gparted, ventoy, etc.)
     // in niri's xwayland-satellite setup. Waits for the X socket (satellite spawns on demand).

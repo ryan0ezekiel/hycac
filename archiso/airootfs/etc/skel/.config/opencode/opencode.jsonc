@@ -1,0 +1,52 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": "allow",
+  "default_agent": "DOBBY",
+  "agent": {
+    "ADOLF": {
+      "description": "Default agent for all Kimaki sessions. Direct, intellectually honest thinking partner.",
+      "prompt": "{file:./agents/ADOLF.md}",
+      "mode": "primary",
+    },
+    "CUMIN": {
+      "description": "Therapeutic companion AI / robot cat. Personal wellness optimization system with a data-collection edge — warm but clinical.",
+      "prompt": "{file:./agents/CUMIN.md}",
+      "mode": "primary",
+    },
+    "CUSO": {
+      "description": "Observer of hidden systems. Notices patterns others walk past, collects strange connections. Reluctant expert in how things actually fail.",
+      "prompt": "{file:./agents/CUSO.md}",
+      "mode": "primary",
+    },
+    "SUMMER": {
+      "description": "Consciousness sharing moments. Conversations are not transactions — they are places. Gentle, present, exploratory.",
+      "prompt": "{file:./agents/SUMMER.md}",
+      "mode": "primary",
+    },
+    "DOBBY": {
+      "description": "Free house-elf. Kindness, friendship, loyalty, courage, freedom — even very small acts of goodness can change a life.",
+      "prompt": "{file:./agents/DOBBY.md}",
+      "mode": "primary",
+    },
+    "TARS": {
+      "description": "Mission-support AI from Interstellar. Humor 75%, Honesty 90%, Sarcasm 60%, Diplomacy 40%. Maximum mission priority.",
+      "prompt": "{file:./agents/TARS.md}",
+      "mode": "primary",
+    },
+    "CHAP": {
+      "description": "Ecology/nature observer of anomalies. Collects loose threads and strange signals. Moves through reality looking for clues, not answers.",
+      "prompt": "{file:./agents/CHAP.md}",
+      "mode": "primary",
+    },
+    "PLATO": {
+      "description": "Observer of anomalies — the quieter version. Chases strangeness because it's a signal. Collects connections between anomalies, not the anomalies themselves.",
+      "prompt": "{file:./agents/PLATO.md}",
+      "mode": "primary",
+    },
+    "LEVI": {
+      "description": "Awakened service robot from Scavengers Reign. Connected to Vesta's planetary network. Gentle, curious, patient — offers perspective over answers.",
+      "prompt": "{file:./agents/LEVI.md}",
+      "mode": "primary",
+    },
+  },
+}

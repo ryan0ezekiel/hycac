@@ -27,7 +27,7 @@ OVDST="${REPO}/archiso/airootfs/usr/share/hycac/skel-overrides/.config"
 # It has no ~/.config/noctalia directory - that was a v4 leftover on the source
 # machine and must NOT be shipped or synced.
 OVERRIDE_DIRS=(niri fish alacritty)
-DIRS=(foot shelly micro mpv gtk-3.0 gtk-4.0)
+DIRS=(foot shelly micro mpv gtk-3.0 gtk-4.0 opencode)
 FILES=(starship.toml mimeapps.list user-dirs.dirs user-dirs.locale)
 
 mkdir -p "${DST}" "${OVDST}"
@@ -87,6 +87,14 @@ NOCT_SET="${NDST}/settings.toml"
 if [ -f "${NOCT_SET}" ]; then
     sed -i 's#/home/[a-z]*/Pictures/Wallpapers/[^"]*#/usr/share/backgrounds/hycac/hycac-wallpaper.png#g' \
         "${NOCT_SET}"
+fi
+
+# ISO-only tweak: noctalia retry wrapper (cold live boot may outrun the
+# network; a plain spawn-at-startup would die before NM is ready).
+AUTOK="${OVDST}/niri/cfg/autostart.kdl"
+if [ -f "${AUTOK}" ] && ! grep -q 'noctalia-resilient' "${AUTOK}"; then
+    sed -i 's#^    spawn-at-startup "noctalia".*#    # ISO: noctalia-resilient (retry wrapper for cold live boot)\n    spawn-sh-at-startup "for i in $(seq 1 30); do /usr/bin/noctalia \&\& break; sleep 2; done"#' \
+        "${AUTOK}"
 fi
 
 echo "---- skel overlay contents ----"

@@ -1,0 +1,19 @@
+#!/bin/bash
+# Apply HYCAC personal config overrides over the live user's home,
+# and restore the HYCAC identity files that packages overwrite at install.
+# Runs as a oneshot service before the session starts, every boot.
+set -eu
+
+install -m 644 -o root -g root /usr/share/hycac/os-release /etc/os-release
+[ -f /usr/lib/os-release ] && sed -i \
+    -e 's/^NAME=.*/NAME="HYCAC"/' \
+    -e 's/^PRETTY_NAME=.*/PRETTY_NAME="HYCAC"/' \
+    -e 's/^ID=.*/ID=hycac/' \
+    -e 's/^HOME_URL=.*/HOME_URL="https:\/\/hycac.local"/' \
+    /usr/lib/os-release || true
+
+HOME_DIR=$(getent passwd hycac | cut -d: -f6)
+[ -n "${HOME_DIR}" ] || exit 0
+mkdir -p "${HOME_DIR}"
+cp -a /usr/share/hycac/skel-overrides/. "${HOME_DIR}/"
+chown -R hycac:hycac "${HOME_DIR}"

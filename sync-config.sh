@@ -8,21 +8,30 @@
 # Live-user adaptation: the ISO user is "hycac" (not "helheim"), and the
 # wallpaper/avatar are the bundled HYCAC art in /usr/share/backgrounds/hycac.
 # All machine-specific paths are rewritten below, AFTER the rsyncs.
+#
+# Two destinations:
+#   skel/                      -> plain dotfiles (no package owns these paths)
+#   usr/share/hycac/skel-overrides/  -> configs ALSO shipped by packages into
+#      /etc/skel (niri, noctalia, alacritty, fish). Placing them in skel makes
+#      pacstrap abort with "exists in filesystem", so they live in an override
+#      staging area applied at boot by hycac-home.service (always wins).
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="${HOME}/.config"
 SKEL="${REPO}/archiso/airootfs/etc/skel"
 DST="${SKEL}/.config"
+OVDST="${REPO}/archiso/airootfs/usr/share/hycac/skel-overrides/.config"
 
-DIRS=(niri noctalia fish alacritty foot shelly micro mpv gtk-3.0 gtk-4.0)
+OVERRIDE_DIRS=(niri noctalia fish alacritty)
+DIRS=(foot shelly micro mpv gtk-3.0 gtk-4.0)
 FILES=(starship.toml mimeapps.list user-dirs.dirs user-dirs.locale)
 
-mkdir -p "${DST}"
+mkdir -p "${DST}" "${OVDST}"
 
-for d in "${DIRS[@]}"; do
+for d in "${OVERRIDE_DIRS[@]}"; do
     if [ -d "${SRC}/${d}" ]; then
-        rsync -a --delete "${SRC}/${d}/" "${DST}/${d}/"
+        rsync -a --delete "${SRC}/${d}/" "${OVDST}/${d}/"
     else
         echo "skip (no dir): ${SRC}/${d}"
     fi
@@ -62,7 +71,10 @@ fi
 #   1. live user is hycac, not the source-machine user
 #   2. wallpapers/avatar point at the bundled HYCAC art
 # ----------------------------------------------------------------------
-grep -rl '/home/helheim' "${SKEL}" --exclude-dir=.git 2>/dev/null \
+grep -rl '/home/helheim' \
+    "${REPO}/archiso/airootfs/etc/skel" \
+    "${REPO}/archiso/airootfs/usr/share/hycac/skel-overrides" \
+    --exclude-dir=.git 2>/dev/null \
     | xargs -r sed -i 's#/home/helheim/#/home/hycac/#g'
 
 NOCT_CFG="${DST}/noctalia/config.toml"

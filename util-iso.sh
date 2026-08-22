@@ -218,7 +218,12 @@ run_build() {
     sudo chown $USER $outFolder
 
     cp ${work_dir}/iso/arch/pkglist.x86_64.txt "$outFolder/$_profile/$(gen_iso_fn).pkgs.txt"
-    mv "$outFolder/$_profile/cachyos-$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)-x86_64.iso" "$outFolder/$_profile/${iso_file}"
+    # mkarchiso names the ISO after iso_name in profiledef.sh ("hycac"); rename
+    # whatever was produced to ${iso_file}. Tolerant of prefix/date drift.
+    _built_iso="$(find "$outFolder/$_profile" -maxdepth 1 -name '*.iso' -newermt "-10 minutes" | sort | tail -n1)"
+    if [ -n "$_built_iso" ] && [ "$_built_iso" != "$outFolder/$_profile/${iso_file}" ]; then
+        mv -f "$_built_iso" "$outFolder/$_profile/${iso_file}"
+    fi
 
     msg "Done [Build ISO] ${iso_file}"
     msg "Finished building [%s]" "${_profile}"

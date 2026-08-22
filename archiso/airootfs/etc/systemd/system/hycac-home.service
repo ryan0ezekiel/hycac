@@ -1,0 +1,13 @@
+[Unit]
+Description=Apply HYCAC personal configuration overrides
+Documentation=man:hycac-apply-overrides(8)
+After=systemd-tmpfiles-setup.service
+Before=display-manager.service getty@tty1.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/hycac-apply-overrides
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

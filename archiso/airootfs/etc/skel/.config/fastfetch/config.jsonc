@@ -3,25 +3,25 @@
   "logo": {
     "type": "file",
     "source": "/usr/share/hycac/hycac-ascii.txt",
-    "padding": { "top": 1, "left": 2, "right": 3 }
+    "padding": { "top": 0, "left": 4, "right": 4 }
   },
   "display": {
     "color": { "keys": "magenta", "title": "cyan" },
-    "separator": ": "
+    "separator": ": ",
+    "key": { "width": 12 }
   },
   "modules": [
-    { "type": "title", "key": "       " },
-    "separator",
-    { "type": "os",     "key": "  OS" },
-    { "type": "kernel", "key": " Kernel" },
-    { "type": "uptime", "key": " Uptime" },
-    { "type": "de",     "key": " Compositor" },
-    { "type": "shell",  "key": " Shell" },
-    { "type": "terminal", "key": " Terminal" },
-    { "type": "cpu",    "key": " CPU" },
-    { "type": "gpu",    "key": " GPU" },
-    { "type": "memory", "key": " Memory" },
-    { "type": "swap",   "key": " Swap" },
+    "title",
+    "break",
+    { "type": "os",       "key": "OS" },
+    { "type": "kernel",   "key": "Kernel" },
+    { "type": "uptime",   "key": "Uptime" },
+    { "type": "de",       "key": "Compositor" },
+    { "type": "shell",    "key": "Shell" },
+    { "type": "terminal", "key": "Terminal" },
+    { "type": "cpu",      "key": "CPU" },
+    { "type": "gpu",      "key": "GPU" },
+    { "type": "memory",   "key": "Memory" },
     { "type": "break" },
     { "type": "colors", "paddingLeft": 4, "symbol": "circle" }
   ]

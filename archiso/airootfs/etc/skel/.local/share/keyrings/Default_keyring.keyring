@@ -1,0 +1,6 @@
+[keyring]
+display-name=Default keyring
+lock-on-idle=false
+lock-after=false
+mtime=0
+version=1

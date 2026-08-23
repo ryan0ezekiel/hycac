@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# HYCAC: launch gparted as root on live sessions, preserving the user's
+# Wayland/X11 environment (pkexec scrubs env by default).
+exec pkexec env \
+    DISPLAY="${DISPLAY:-:0}" \
+    WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}" \
+    XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}" \
+    HOME=/root \
+    dbus-launch /usr/bin/gparted "$@"

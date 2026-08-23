@@ -1,127 +1,53 @@
-# HYCAC - light personal live environment (niri + Noctalia on CachyOS)
-# Pure live: no installer, no printing, no NVIDIA, single kernel, no CJK fonts.
 
-# --- base system ---
-base
-bash-completion
-btrfs-progs
-cryptsetup
-diffutils
-dosfstools
-e2fsprogs
-exfatprogs
-gptfdisk
-inetutils
-less
-lsof
-lsb-release
-man-db
-mkinitcpio
-mkinitcpio-archiso
-ntfs-3g
-openssh
-parted
-polkit
-rsync
-rtkit
-sudo
-syslinux
-systemd-resolvconf
-grub
-usbutils
-vim
-wget
-xdg-utils
-zram-generator
-
-# --- kernel (one only) ---
-linux-cachyos
-linux-firmware
-
-# --- cachyos repo plumbing ---
-cachyos-keyring
-cachyos-mirrorlist
-cachyos-v3-mirrorlist
-cachyos-v4-mirrorlist
-cachyos-rate-mirrors
-cachyos-settings
-cachyos-hooks
-chwd
-reflector
-
-# --- network ---
-avahi
-bind
-dnsmasq
-iw
-modemmanager
-networkmanager
-networkmanager-openvpn
-nss-mdns
-openvpn
-usb_modeswitch
-wireless-regdb
-wpa_supplicant
-ufw
-
-# --- audio ---
+accountsservice
+alacritty
 alsa-utils
-pipewire
-pipewire-alsa
-pipewire-pulse
-wireplumber
-sof-firmware
-realtime-privileges
-
+ananicy-cpp
+# --- applications from the source machine ---
+ark
+# --- audio ---
+avahi
+baobab
+base
+# --- base system ---
+bash-completion
+bind
 # --- bluetooth ---
 bluez
 bluez-utils
-
-# --- graphics / hybrid GPU (Intel primary, nouveau fallback) ---
-mesa
-vulkan-icd-loader
-vulkan-intel
-intel-media-driver
-intel-media-sdk
-intel-ucode
-switcheroo-control
-upower
-power-profiles-daemon
-ananicy-cpp
-
-# --- session: niri + noctalia via greetd autologin ---
-cachyos-niri-noctalia
-greetd
-noctalia-greeter
-fish
-cachyos-fish-config
-accountsservice
-espeak-ng
-orca
-polkit-kde-agent
-wlsunset
-xdg-user-dirs
-
-# --- fonts ---
-cantarell-fonts
-noto-fonts
-noto-fonts-emoji
-ttf-dejavu
-ttf-liberation
-ttf-jetbrains-mono
-
-# --- applications from the source machine ---
-alacritty
-ark
-baobab
 btop
 btrfs-assistant
+btrfs-progs
+cachyos-fish-config
+cachyos-hooks
+cachyos-keyring
+cachyos-mirrorlist
+cachyos-niri-noctalia
+cachyos-rate-mirrors
+# --- cachyos repo plumbing ---
+cachyos-settings
+cachyos-v3-mirrorlist
+cachyos-v4-mirrorlist
+cantarell-fonts
+chwd
+cryptsetup
+diffutils
+dnsmasq
+dosfstools
 duf
+e2fsprogs
+espeak-ng
+evince
 evtest
+exfatprogs
 fastfetch
+ffmpegthumbnailer
 firefox
+fish
 flatpak
+# --- flatpak runtime support ---
 flatseal
+# --- fonts ---
 freedownloadmanager
 git
 github-cli
@@ -129,38 +55,103 @@ glances
 gnome-disk-utility
 gnome-software
 gparted
+gptfdisk
+# --- graphics / hybrid GPU (Intel primary, nouveau fallback) ---
+greetd
+grub
 hdparm
 hwinfo
 hwloc
+# HYCAC - light personal live environment (niri + Noctalia on CachyOS)
+inetutils
+intel-media-driver
+intel-media-sdk
+intel-ucode
+iw
+# --- kernel (one only) ---
+less
+linux-cachyos
+linux-firmware
+lsb-release
+lsof
 lsscsi
+man-db
 meld
+mesa
 micro
-mtools
+mkinitcpio
+mkinitcpio-archiso
+modemmanager
 mpv
+mtools
 nautilus
+# --- network ---
+networkmanager
+networkmanager-openvpn
+noctalia-greeter
+noto-fonts
+noto-fonts-emoji
+nss-mdns
+ntfs-3g
 octopi
 opencode
+openssh
+openvpn
+orca
+parted
 pavucontrol
+pipewire
+pipewire-alsa
+pipewire-pulse
+plymouth
+polkit
+polkit-kde-agent
+power-profiles-daemon
+# Pure live: no installer, no printing, no NVIDIA, single kernel, no CJK fonts.
 pv
 rapidraw-bin
+realtime-privileges
+reflector
 ripgrep
+rsync
+rtkit
 scx-manager
+# --- session: niri + noctalia via greetd autologin ---
 sg3_utils
 shelly
 smartmontools
+sof-firmware
+sudo
 superfile
+switcheroo-control
+syslinux
+systemd-resolvconf
 testdisk
+ttf-dejavu
+ttf-jetbrains-mono
+ttf-liberation
+ufw
 unrar
 unzip
-ventoy-bin
+upower
+usb_modeswitch
+usbutils
 v4l-utils
+ventoy-bin
+vim
+vulkan-icd-loader
+vulkan-intel
+wget
+wireless-regdb
+wireplumber
+wlsunset
+wpa_supplicant
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+xdg-user-dirs
+xdg-utils
 yay-bin
 yt-dlp
 zed
 zip
-ffmpegthumbnailer
-
-# --- flatpak runtime support ---
-xdg-desktop-portal-gnome
-xdg-desktop-portal-gtk
-evince
+zram-generator

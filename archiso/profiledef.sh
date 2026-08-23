@@ -35,4 +35,5 @@ file_permissions=(
   ["/usr/local/bin/nvidia-module-loader"]="0:0:755"
   ["/usr/local/bin/pkexec-wrapper"]="0:0:755"
   ["/usr/local/bin/hycac-apply-overrides"]="0:0:755"
+  ["/usr/local/bin/gparted"]="0:0:755"
 )

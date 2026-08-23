@@ -15,7 +15,7 @@ setsid qemu-system-x86_64 \
   -enable-kvm -cpu host -smp 4 -m 3G \
   -kernel /tmp/opencode/vmlinuz-linux-cachyos \
   -initrd /tmp/opencode/initramfs-linux-cachyos.img \
-  -append "archisobasedir=arch archisosearchuuid=$ISO_UUID cow_spacesize=10G module_blacklist=pcspkr i915.modeset=1 amdgpu.modeset=1 nvme_load=yes console=ttyS0" \
+  -append "archisobasedir=arch archisosearchuuid=$ISO_UUID cow_spacesize=10G quiet splash module_blacklist=pcspkr i915.modeset=1 amdgpu.modeset=1 nvme_load=yes console=ttyS0" \
   -cdrom "$ISO" \
   -display none -vga std \
   -monitor unix:/tmp/opencode/qemu-mon,server,nowait \

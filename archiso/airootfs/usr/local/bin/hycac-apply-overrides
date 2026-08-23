@@ -11,6 +11,11 @@ install -m 644 -o root -g root /usr/share/hycac/os-release /etc/os-release
     -e 's/^ID=.*/ID=hycac/' \
     -e 's/^HOME_URL=.*/HOME_URL="https:\/\/hycac.local"/' \
     /usr/lib/os-release || true
+# identity files packages love to stomp (cachyos-settings et al)
+[ -f /usr/share/hycac/hostname ] && install -m 644 -o root -g root \
+    /usr/share/hycac/hostname /etc/hostname || true
+[ -f /usr/share/hycac/issue ] && install -m 644 -o root -g root \
+    /usr/share/hycac/issue /etc/issue || true
 
 HOME_DIR=$(getent passwd hycac | cut -d: -f6)
 [ -n "${HOME_DIR}" ] || exit 0

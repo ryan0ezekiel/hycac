@@ -51,7 +51,7 @@ check "no failed system units"      "systemctl --failed --no-legend --plain" "" 
 check "no failed user units"        "systemctl --user --failed --no-legend --plain" "" empty
 check "kernel errors <= 5"          "sudo -n dmesg -l err,crit,alert,emerg --notime | sort -u" "" count_max:5
 check "plymouth theme default"      "readlink /usr/share/plymouth/themes/default.plymouth" "hycac/hycac.plymouth"
-check "plymouth theme in initramfs" "sudo -n lsinitcpio -l /boot/initramfs-linux-cachyos.img | grep -c themes/hycac" "[1-9]"
+check "plymouth theme in initramfs" "sudo -n lsinitcpio -l /run/archiso/bootmnt/arch/boot/x86_64/initramfs-linux-cachyos.img | grep -c themes/hycac" "[1-9]"
 check "splash on kernel cmdline"    "grep -o 'quiet splash' /proc/cmdline" "quiet splash"
 check "hostname is hycac"           "cat /etc/hostname" "^hycac"
 check "issue is HYCAC-branded"      "grep -c '^HYCAC' /etc/issue" "^1\$"

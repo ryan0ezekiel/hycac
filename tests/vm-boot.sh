@@ -15,7 +15,9 @@ echo "iso uuid: $ISO_UUID"
 MNT=/tmp/opencode/isomnt
 sudo rm -rf "$MNT"; mkdir -p "$MNT"
 sudo mount -o loop,ro "$ISO" "$MNT"
+sudo rm -f /tmp/opencode/vmlinuz-linux-cachyos /tmp/opencode/initramfs-linux-cachyos.img
 cp "$MNT/arch/boot/x86_64/vmlinuz-linux-cachyos" /tmp/opencode/
+sudo rm -f /tmp/opencode/vmlinuz-linux-cachyos /tmp/opencode/initramfs-linux-cachyos.img
 cp "$MNT/arch/boot/x86_64/initramfs-linux-cachyos.img" /tmp/opencode/
 sudo umount "$MNT"
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # vm-boot.sh - boot the HYCAC ISO headless and prepare SSH access
 set -u
-ISO="${1:-$(ls -t out/hycac/*.iso 2>/dev/null | head -1)}"
+ISO="${1:-$(ls -t /home/helheim/Projects/ISO/hycac/out/hycac/*.iso 2>/dev/null | head -1)}"
 LOG=/tmp/opencode/serial.log
 CTL=/tmp/opencode/serial-ctl
 
@@ -10,6 +10,14 @@ rm -f "$LOG" "$CTL" /tmp/opencode/qemu-mon
 
 ISO_UUID=$(blkid -s UUID -o value "$ISO")
 echo "iso uuid: $ISO_UUID"
+
+# extract kernel+initrd from the ISO for direct-kernel boot
+MNT=/tmp/opencode/isomnt
+sudo rm -rf "$MNT"; mkdir -p "$MNT"
+sudo mount -o loop,ro "$ISO" "$MNT"
+cp "$MNT/arch/boot/x86_64/vmlinuz-linux-cachyos" /tmp/opencode/
+cp "$MNT/arch/boot/x86_64/initramfs-linux-cachyos.img" /tmp/opencode/
+sudo umount "$MNT"
 
 setsid qemu-system-x86_64 \
   -enable-kvm -cpu host -smp 4 -m 3G \
@@ -28,9 +36,9 @@ echo "VM launched"
 # wait for login prompt on serial (max 240s)
 for i in $(seq 1 48); do
     sleep 5
-    grep -aq 'CachyOS login:' "$LOG" && break
+    grep -aq 'login:' "$LOG" && break
 done
-grep -aq 'CachyOS login:' "$LOG" || { echo "FAIL: no login prompt after 240s"; exit 1; }
+grep -aq 'login:' "$LOG" || { echo "FAIL: no login prompt after 240s"; exit 1; }
 echo "login prompt reached after ~$((i*5))s"
 
 send() { printf '%s\n' "$1" | socat - "unix-connect:$CTL" >/dev/null 2>&1; sleep 1; }

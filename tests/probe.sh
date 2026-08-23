@@ -51,14 +51,14 @@ check "no failed system units"      "systemctl --failed --no-legend --plain" "" 
 check "no failed user units"        "systemctl --user --failed --no-legend --plain" "" empty
 check "kernel errors <= 5"          "sudo -n dmesg -l err,crit,alert,emerg --notime | sort -u" "" count_max:5
 check "plymouth theme default"      "readlink /usr/share/plymouth/themes/default.plymouth" "hycac/hycac.plymouth"
-check "plymouth hook in initcpio"   "grep plymouth /etc/mkinitcpio.conf.d/archiso.conf" "block plymouth filesystems"
+check "plymouth theme in initramfs" "sudo -n lsinitcpio -l /boot/initramfs-linux-cachyos.img | grep -c themes/hycac" "[1-9]"
 check "splash on kernel cmdline"    "grep -o 'quiet splash' /proc/cmdline" "quiet splash"
 check "hostname is hycac"           "cat /etc/hostname" "^hycac"
-check "issue is HYCAC-branded"      "head -2 /etc/issue | tail -1" "HYCAC"
-check "fastfetch shows HYCAC"       "fastfetch --logo none 2>/dev/null; grep -q HYCAC ~/.config/fastfetch/config.jsonc && echo branded" "branded"
+check "issue is HYCAC-branded"      "grep -c '^HYCAC' /etc/issue" "^1\$"
+check "fastfetch shows HYCAC"       "grep -c 'hycac-ascii.txt' ~/.config/fastfetch/config.jsonc" "^1\$"
 check "keyring seed present"        "ls ~/.local/share/keyrings/default >/dev/null && cat ~/.local/share/keyrings/default" "Default_keyring"
 check "gparted wrapper live"        "test -x /usr/local/bin/gparted && pacman -Q gparted >/dev/null && echo ready" "ready"
-check "polkit nopasswd for wheel"   "grep -l wheel /etc/polkit-1/rules.d/*.rules >/dev/null && echo yes" "yes"
+check "polkit nopasswd for wheel"   "sudo -n sh -c 'grep -l wheel /etc/polkit-1/rules.d/*.rules'" "nopasswd_global"
 
 echo "== verdict =="
 echo "passed: $pass   failed: $fail"

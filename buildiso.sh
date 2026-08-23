@@ -76,6 +76,6 @@ for sig in TERM HUP QUIT; do
 done
 trap 'trap_exit INT "$(gettext "Aborted by user! Exiting...")"' INT
 trap 'trap_exit USR1 "$(gettext "An unknown error has occurred. Exiting...")"' ERR
-trap 'trap_exit EXIT "$(gettext "An unknown error has occurred. Exiting...")"' EXIT
+trap 'rc=$?; [ $rc -ne 0 ] && trap_exit EXIT "$(gettext "Build failed (exit %d). Exiting...")" "$rc"' EXIT
 
 run_build "${build_list_iso}"

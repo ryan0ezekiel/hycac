@@ -25,6 +25,7 @@ check() { # name, command, expect_regex, mode(normal|empty|count_max:N)
 
 echo "== HYCAC live ISO probe battery =="
 check "hycac-home.service active"   "systemctl is-active hycac-home.service" "^active$"
+check "override script exec bit"    "test -x /usr/local/bin/hycac-apply-overrides && echo yes" "yes"
 check "os-release is HYCAC"         "grep ^NAME /etc/os-release"             "HYCAC"
 check "wallpaper path in settings"  "grep -c 'backgrounds/hycac/hycac-wallpaper.png' ~/.local/state/noctalia/settings.toml" "^3$"
 check "niri keybinds present"       "test -s ~/.config/niri/cfg/keybinds.kdl && echo yes" "yes"

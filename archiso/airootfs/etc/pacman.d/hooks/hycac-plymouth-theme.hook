@@ -1,9 +1,0 @@
-[Trigger]
-Operation = Install
-Type = Package
-Target = plymouth
-
-[Action]
-Description = Pointing plymouth at the HYCAC splash theme
-When = PostTransaction
-Exec = /usr/bin/bash -c "grep -q '^Theme=' /etc/plymouth/plymouthd.conf || printf '\n[Daemon]\nTheme=hycac\n' >> /etc/plymouth/plymouthd.conf; sed -i 's/^Theme=.*/Theme=hycac/' /etc/plymouth/plymouthd.conf"

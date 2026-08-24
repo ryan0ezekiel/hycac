@@ -1,5 +1,5 @@
-# HYCAC GRUB theme - mirrors the plymouth splash:
-# black canvas, centered HYCAC watermark, quiet light-gray menu below.
+# HYCAC GRUB theme - black canvas, large centered brand mark (baked into
+# bg.png), quiet light-gray menu in the lower third.
 
 desktop-image: "bg.png"
 desktop-image-scale-method: "stretch"
@@ -9,15 +9,21 @@ title-color: "#ececf1"
 title-font: "Unknown Regular 16"
 
 + boot_menu {
-    left = 8%
-    top = 76%
-    width = 84%
-    item_height = "28"
-    item_padding = "4"
-    item_spacing = "6"
+    left = 25%
+    top = 58%
+    width = 50%
+
+    height = 40%
+
+    item_height = 32
+    item_padding = 8
+    item_spacing = 10
     menu_pixmap_style = "empty_*.png"
 
+    item_font = "Unknown Regular 16"
     item_color = "#b8bcc4"
+
+    selected_item_font = "Unknown Regular 16"
     selected_item_color = "#ffffff"
     selected_item_pixmap_style = "select_*.png"
 }

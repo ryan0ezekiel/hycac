@@ -9,7 +9,7 @@ if test -f /usr/share/cachyos-fish-config/cachyos-config.fish
 end
 
 function fish_greeting
-    fastfetch --logo none
+    fastfetch
 end
 
 # opencode CLI

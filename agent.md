@@ -22,7 +22,11 @@ cost someone an afternoon. Read it before changing anything.
 ## Build
 
 ```
-/home/helheim/Projects/ISO/build-launch.sh     # detached builder
+/home/helheim/Projects/ISO/hycac/sync-config.sh   # ALWAYS run first - it
+                                                  # generates the airootfs
+                                                  # config files; buildiso
+                                                  # does NOT call it
+/home/helheim/Projects/ISO/build-launch.sh        # detached builder (~25-40 min)
 ```
 
 * Takes ~35–40 min. Progress: `tr '\r' '\n' < /tmp/opencode/hycac-build.log | grep '%'`
@@ -80,12 +84,24 @@ bash -lc '<script>'
 **GRUB**
 * Archiso's embedded grub.cfg sets `$root` but NOT `$prefix` (prefix
   stays pointed at the memdisk). Anchor theme paths as
-  `(${root})/boot/grub/theme/hycac/theme.txt`. `${prefix}` or bare
-  `${root}` both fail with "theme.txt not found".
+  `(${root})/boot/grub/theme/hycac/theme.txt`, and give `loadfont` a
+  `${prefix}` attempt followed by a `(${root})` fallback.
+* `+ boot_menu` REQUIRES an explicit `height`. Without one GRUB collapses
+  the scroll window to ~3 items and silently hides the rest.
+  `top = 58%` + `height = 40%` fits all resolutions from 640×480 up.
+* `empty_*.png` is a 1×1 transparent stub (entries float on the desktop
+  image); `select_*.png` (38,44,52 @ a=170) is the selected-row highlight
+  — over black it reads as (25,29,34).
+* The brand mark in `theme/hycac/bg.png` is rendered from
+  `branding/hycac.svg` via rsvg-convert (recolored #ECECF1), NOT upscaled
+  raster. Regenerate with: recolor svg `<g>` → `<g fill="#ECECF1">`,
+  render at ~836×972, paste centered-x / center-y at 33% height on a
+  3840×2160 transparent canvas. Logo ends at 55% screen height; menu
+  starts at 58% - keep that clearance when touching either.
 * mkarchiso copies non-`.cfg` files under profile `grub/` recursively to
   ISO `/boot/grub/` — fonts and themes ship fine, just don't rename.
-* GRUB and plymouth rasterize only png/jpeg/tga. No SVG. For high-res
-  scaling ship big PNGs.
+* GRUB and plymouth rasterize only png/jpeg/tga. No SVG at runtime. For
+  high-res scaling ship big PNGs rendered FROM the SVG sources.
 
 **Tooling**
 * `pkill -f <pattern>` matches the tool-batch's own shell command line
@@ -105,9 +121,11 @@ bash -lc '<script>'
 ## Definition of green
 
 * probe battery: 47/47 PASS (bongocat may report vm-skip)
-* UEFI: GRUB renders theme bg + centered glyphs (no memdisk fallback)
+* UEFI: GRUB theme renders - big centered brand mark, header line, and
+  ALL FIVE menu entries (count them; missing height = silent clipping)
 * BIOS: plymouth shows glyphs steady, zero opaque-box pixels, tribar
   animates (track drains, red grows)
+* live fish greeting runs plain `fastfetch` (logo shown)
 
 ## Git
 

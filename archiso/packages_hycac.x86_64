@@ -57,6 +57,11 @@ greetd
 grub
 hdparm
 hwinfo
+# xorg-xhost: the niri autostart grants root access to the XWayland
+# display with `xhost +SI:localuser:root`; without this package that
+# grant silently fails and gparted/ventoy die with "Authorization
+# required". Do not remove.
+xorg-xhost
 hwloc
 # HYCAC - light personal live environment (niri + Noctalia on CachyOS)
 inetutils

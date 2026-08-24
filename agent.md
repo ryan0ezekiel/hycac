@@ -16,7 +16,7 @@ cost someone an afternoon. Read it before changing anything.
 | `archiso/grub/` | GRUB theme (`theme/hycac/{bg.png,theme.txt,*_c.png}`), `grub.cfg`, `fonts/unicode.pf2` |
 | `archiso/airootfs/usr/share/plymouth/themes/hycac/` | boot splash theme |
 | `archiso/airootfs/usr/share/backgrounds/hycac/hycac-wallpaper.png` | live-env wallpaper (3840×2160) |
-| `tests/probe.sh` | post-boot verification battery (47 checks) |
+| `tests/probe.sh` | post-boot verification battery (48 checks) |
 | `out/hycac/` | build output (gitignored) |
 
 ## Build
@@ -86,18 +86,24 @@ bash -lc '<script>'
   stays pointed at the memdisk). Anchor theme paths as
   `(${root})/boot/grub/theme/hycac/theme.txt`, and give `loadfont` a
   `${prefix}` attempt followed by a `(${root})` fallback.
-* `+ boot_menu` REQUIRES an explicit `height`. Without one GRUB collapses
-  the scroll window to ~3 items and silently hides the rest.
-  `top = 58%` + `height = 40%` fits all resolutions from 640×480 up.
-* `empty_*.png` is a 1×1 transparent stub (entries float on the desktop
-  image); `select_*.png` (38,44,52 @ a=170) is the selected-row highlight
-  — over black it reads as (25,29,34).
+* Theme fonts must be `loadfont`ed BEFORE `set theme` runs - boot_menu
+  resolves font names at theme-apply time; an unloaded name aborts the
+  whole theme back to console mode.
+* `+ boot_menu` REQUIRES an explicit `height` WITH HEADROOM: height=210
+  with 42px items shows only FOUR of five entries (GRUB's scroller needs
+  strict slack). height=240 shows all five. Verify by COUNTING entries.
+* A transparent bg.png composites over BLACK - `desktop-color:` is NOT
+  what shows through alpha. To match plymouth's canvas exactly, bake the
+  color opaque into the PNG (bg.png is solid #101015 + emblem).
 * The brand mark in `theme/hycac/bg.png` is rendered from
   `branding/hycac.svg` via rsvg-convert (recolored #ECECF1), NOT upscaled
-  raster. Regenerate with: recolor svg `<g>` → `<g fill="#ECECF1">`,
-  render at ~836×972, paste centered-x / center-y at 33% height on a
-  3840×2160 transparent canvas. Logo ends at 55% screen height; menu
-  starts at 58% - keep that clearance when touching either.
+  raster. Current recipe: render at ~558×648, paste centered-x /
+  center-y at 38% on a solid #101015 3840×2160 canvas.
+* The menu is styled to mirror the plymouth tribar zone: unselected text
+  #ECECF1 (emblem white), selected text #E5484D (bar red) over a faint
+  red wash select_*.png rgba(229,72,77,50) - over #101015 that wash
+  reads as ~(58,31,32) in screendumps. Font is JetBrains Mono Regular 18
+  pre-rendered to pf2 (grub-mkfont, committed) - zero extra ISO packages.
 * mkarchiso copies non-`.cfg` files under profile `grub/` recursively to
   ISO `/boot/grub/` — fonts and themes ship fine, just don't rename.
 * GRUB and plymouth rasterize only png/jpeg/tga. No SVG at runtime. For
@@ -117,10 +123,23 @@ bash -lc '<script>'
 * Noctalia bongocat spawns `evtest` only when `[widget.cat] input_devices`
   exists (NOT `[widget.bongocat]`), `evtest` is installed, and the user is
   in the `input` group. Do not strip the key.
+* Root GUI apps (gparted, ventoy, btrfs-assistant) need `xorg-xhost`
+  shipped — niri's autostart grants root access to the XWayland display
+  via `xhost +SI:localuser:root`, and xwayland-satellite honors those
+  grants. Without the binary the grant silently fails ("command not
+  found") and elevated apps die with "Authorization required".
+* gparted quirk: `/usr/bin/gparted` passes args straight to gpartedbin,
+  which treats `--version` as a DEVICE argument and then runs its main
+  loop. Don't use `--version` for liveness checks; check `pgrep
+  gpartedbin` after launching instead.
+* ssh into the VM from fish-remote shells: wrap everything in
+  `bash -lc`, and remember remote commands inherit no descriptors —
+  dbus-launch children keep stdout open and hang ssh; detach with
+  `setsid ... >/file 2>&1 </dev/null &`.
 
 ## Definition of green
 
-* probe battery: 47/47 PASS (bongocat may report vm-skip)
+* probe battery: 48/48 PASS (bongocat may report vm-skip)
 * UEFI: GRUB theme renders - big centered brand mark, header line, and
   ALL FIVE menu entries (count them; missing height = silent clipping)
 * BIOS: plymouth shows glyphs steady, zero opaque-box pixels, tribar

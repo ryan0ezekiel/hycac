@@ -68,6 +68,7 @@ check "bongocat evtest spawned"      "bash -lc 'if [ ! -e /dev/dri/renderD128 ];
 check "fish config lean"             "wc -l < ~/.config/fish/config.fish" "^[0-9]{1,2}$"
 check "fish single bun block"        "grep -c '^set --export BUN_INSTALL' ~/.config/fish/config.fish" "^1\$"
 check "xhost grants live user"       "grep -c 'localuser:hycac' ~/.config/niri/cfg/autostart.kdl" "^1\$"
+check "xhost binary shipped"         "pacman -Q xorg-xhost >/dev/null && echo present" "present"
 check "hostname is hycac"           "cat /etc/hostname" "^hycac"
 check "issue is HYCAC-branded"      "grep -c '^HYCAC' /etc/issue" "^1\$"
 check "fastfetch shows HYCAC"       "grep -c 'hycac-ascii.txt' ~/.config/fastfetch/config.jsonc" "^1\$"

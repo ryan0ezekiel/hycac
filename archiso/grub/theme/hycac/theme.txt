@@ -1,29 +1,35 @@
-# HYCAC GRUB theme - black canvas, large centered brand mark (baked into
-# bg.png), quiet light-gray menu in the lower third.
+# HYCAC GRUB theme - mirrors the plymouth splash so the two screens read
+# as one: same canvas (#101015), same centered emblem, and a menu that
+# occupies the progress bar's zone (bottom edge ~90%). Selecting an entry
+# hands the screen to plymouth, where that zone becomes the tribar.
+#
+# palette straight from the splash:
+#   bg      #101015  (plymouth implicit background)
+#   emblem  #ECECF1  (watermark white)
+#   bar red #E5484D  (tribar fill -> selected entry)
+#   track   #26262C
+# font: JetBrains Mono Regular 18, pre-rendered to pf2 at build time
+# (grub-mkfont) - no extra package in the ISO.
 
 desktop-image: "bg.png"
 desktop-image-scale-method: "stretch"
-desktop-color: "#000000"
-
-title-color: "#ececf1"
-title-font: "Unknown Regular 16"
+desktop-color: "#101015"
 
 + boot_menu {
-    left = 25%
-    top = 58%
-    width = 50%
+    left = 23%
+    top = 62%
+    width = 54%
+    height = 240
 
-    height = 40%
-
-    item_height = 32
+    item_height = 34
     item_padding = 8
-    item_spacing = 10
+    item_spacing = 8
     menu_pixmap_style = "empty_*.png"
 
-    item_font = "Unknown Regular 16"
-    item_color = "#b8bcc4"
+    item_font = "JetBrains Mono Regular 18"
+    item_color = "#ececf1"
 
-    selected_item_font = "Unknown Regular 16"
-    selected_item_color = "#ffffff"
+    selected_item_font = "JetBrains Mono Regular 18"
+    selected_item_color = "#e5484d"
     selected_item_pixmap_style = "select_*.png"
 }

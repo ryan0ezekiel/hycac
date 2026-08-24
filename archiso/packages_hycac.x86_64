@@ -7,7 +7,6 @@ ananicy-cpp
 ark
 # --- audio ---
 avahi
-baobab
 base
 # --- base system ---
 bash-completion
@@ -36,7 +35,6 @@ dnsmasq
 dosfstools
 duf
 e2fsprogs
-espeak-ng
 evince
 evtest
 exfatprogs
@@ -48,12 +46,10 @@ flatpak
 # --- flatpak runtime support ---
 flatseal
 # --- fonts ---
-freedownloadmanager
 git
 github-cli
 glances
 gnome-disk-utility
-gnome-software
 gparted
 gptfdisk
 # --- graphics / hybrid GPU (Intel primary, nouveau fallback) ---
@@ -81,7 +77,6 @@ mesa
 micro
 mkinitcpio
 mkinitcpio-archiso
-modemmanager
 mpv
 mtools
 nautilus
@@ -97,7 +92,6 @@ octopi
 opencode
 openssh
 openvpn
-orca
 parted
 pavucontrol
 pipewire
@@ -108,8 +102,9 @@ polkit
 polkit-kde-agent
 power-profiles-daemon
 # Pure live: no installer, no printing, no NVIDIA, single kernel, no CJK fonts.
+# Scavenged: rapidraw-bin freedownloadmanager orca espeak-ng modemmanager
+#   usb_modeswitch baobab gnome-software (all leaf pkgs, verified via pactree -r)
 pv
-rapidraw-bin
 realtime-privileges
 reflector
 ripgrep
@@ -134,7 +129,6 @@ ufw
 unrar
 unzip
 upower
-usb_modeswitch
 usbutils
 v4l-utils
 ventoy-bin

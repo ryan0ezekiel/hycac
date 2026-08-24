@@ -1,32 +1,8 @@
 [Plymouth Theme]
 Name=HYCAC
-Description=Simple HYCAC splash: centered logo over black with a progress bar
-ModuleName=two-step
+Description=HYCAC splash: transparent background, centered watermark, tribar progress
+ModuleName=script
 
-[two-step]
-Font=Cantarell 12
-TitleFont=Cantarell Light 30
+[script]
+ScriptFile=/usr/share/plymouth/themes/hycac/hycac.script
 ImageDir=/usr/share/plymouth/themes/hycac
-DialogHorizontalAlignment=.5
-DialogVerticalAlignment=.382
-HorizontalAlignment=.5
-VerticalAlignment=.7
-WatermarkHorizontalAlignment=.5
-WatermarkVerticalAlignment=.5
-Transition=none
-TransitionDuration=0.0
-BackgroundStartColor=0x000000
-BackgroundEndColor=0x000000
-ProgressBarBackgroundColor=0x606060
-ProgressBarForegroundColor=0xececf1
-DialogClearsFirmwareBackground=true
-MessageBelowAnimation=true
-
-[boot-up]
-UseEndAnimation=false
-
-[shutdown]
-UseEndAnimation=false
-
-[reboot]
-UseEndAnimation=false

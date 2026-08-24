@@ -27,4 +27,5 @@ file_permissions=(
   ["/root/.gnupg"]="0:0:700"
   ["/usr/local/bin/gparted"]="0:0:755"
   ["/usr/local/bin/hycac-apply-overrides"]="0:0:755"
+  ["/usr/local/bin/hycac-niri-session"]="0:0:755"
 )

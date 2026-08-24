@@ -1,0 +1,15 @@
+#!/bin/bash
+# HYCAC: niri-session wrapper for greetd.
+#
+# greetd attaches this session straight to VT1, so anything the session
+# startup writes to stderr is painted onto the console exactly where the
+# splash just exited - most visibly systemd's (>= 261) orange
+#   "Calling import-environment without a list of variable names is deprecated."
+# which niri-session (<= 26.04, via dbus-update-activation-environment --all /
+# argless import-environment) triggers twice per boot.
+#
+# Upstream fix (explicit variable list): niri PR #3572, not in any released
+# package yet. Until then, route stderr into the journal instead of the VT;
+# stdout is left untouched.
+export XDG_SESSION_TYPE=wayland XDG_CURRENT_DESKTOP=niri XDG_SESSION_DESKTOP=niri
+exec /usr/bin/niri-session 2> >(systemd-cat -t hycac-niri-session -p notice)

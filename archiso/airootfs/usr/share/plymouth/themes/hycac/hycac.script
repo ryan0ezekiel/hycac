@@ -1,0 +1,94 @@
+# HYCAC live splash - plymouth script theme
+#
+#   * TRANSPARENT BACKGROUND: Window.SetBackgroundTopColor/BottomColor are
+#     deliberately never called. plymouth then leaves whatever the boot chain
+#     put on the framebuffer visible (vendor logo via GOP/BGRT on real
+#     hardware) instead of painting an opaque backdrop over it.
+#   * centered watermark (watermark.png)
+#   * TRIBAR progress: three stacked bars, red -> green -> blue, filled
+#     left-to-right following plymouth's real boot progress.
+#
+# CONSTRAINTS DISCOVERED ON plymouth 26.134.222-2 (CachyOS) - do not regress:
+#   1. hycac.plymouth MUST declare ImageDir= under [script], otherwise
+#      script_lib_image_setup() strdups a NULL dir and plymouthd SEGFAULTs
+#      during early boot (splash silently disappears into details fallback).
+#   2. Image()/Sprite() creation works ONLY at file scope. Inside functions
+#      the calls parse but silently produce nothing.
+#   3. Therefore ALL sprites are created below at file scope; boot_progress_cb
+#      only repositions existing sprites and toggles opacities.
+#   4. Bars are built from pre-sized PNG segments (5x10px) repeated natively;
+#      Image.Scale()/Crop() rendered unreliably on this build - avoid.
+
+# ---------------- tunables ----------------
+N_SEGS    = 96;    # segments per bar -> bar is 480 px wide
+BAR_GAP   = 6;     # vertical gap between bars in px
+BAR_BOTTOM_FRAC = 0.10;  # bar block bottom, as fraction up from screen bottom
+
+SEG_W = 5;         # must match seg-*.png width
+BAR_H = 10;        # must match seg-*.png height
+bar_w = N_SEGS * SEG_W;
+
+# ---------------- assets (file scope ONLY!) ----------------
+track_img = Image("seg-track.png");
+red_img   = Image("seg-red.png");
+green_img = Image("seg-green.png");
+blue_img  = Image("seg-blue.png");
+logo_img  = Image("watermark.png");
+
+logo_sprite = Sprite(logo_img);
+
+# sprite pools; fills start hidden
+for (i = 0; i < N_SEGS; i++)
+  {
+    tracks[i] = Sprite(track_img);
+    fr[i] = Sprite(red_img);
+    fg[i] = Sprite(green_img);
+    fb[i] = Sprite(blue_img);
+    fr[i].SetOpacity(0);
+    fg[i].SetOpacity(0);
+    fb[i].SetOpacity(0);
+  }
+
+win_w = -1; win_h = -1;
+
+fun boot_progress_cb (duration, progress)
+  {
+    # re-layout only when the window geometry actually changes
+    w = Window.GetWidth();
+    h = Window.GetHeight();
+    if (w != win_w || h != win_h)
+      {
+        win_w = w; win_h = h;
+
+        logo_sprite.SetPosition((win_w - logo_img.GetWidth()) / 2,
+                                (win_h - logo_img.GetHeight()) / 2);
+
+        x0 = (win_w - bar_w) / 2;
+        base_y = win_h * (1 - BAR_BOTTOM_FRAC) - (BAR_H * 3 + BAR_GAP * 2);
+
+        for (i = 0; i < N_SEGS; i++)
+          {
+            sx = x0 + i * SEG_W;
+            tracks[i].SetPosition(sx, base_y);
+            fr[i].SetPosition(sx, base_y);
+            fg[i].SetPosition(sx, base_y + BAR_H + BAR_GAP);
+            fb[i].SetPosition(sx, base_y + (BAR_H + BAR_GAP) * 2);
+          }
+      }
+
+    # sequential fill: red completes 0-33%, green 33-66%, blue 66-100%
+    lit_r = progress * 3 * N_SEGS;     if (lit_r > N_SEGS) lit_r = N_SEGS;
+    lit_g = progress * 3 * N_SEGS - N_SEGS;   if (lit_g < 0) lit_g = 0;
+    if (lit_g > N_SEGS) lit_g = N_SEGS;
+    lit_b = progress * 3 * N_SEGS - 2 * N_SEGS; if (lit_b < 0) lit_b = 0;
+    if (lit_b > N_SEGS) lit_b = N_SEGS;
+
+    for (i = 0; i < N_SEGS; i++)
+      {
+        if (i < lit_r) { fr[i].SetOpacity(1); } else { fr[i].SetOpacity(0); }
+        if (i < lit_g) { fg[i].SetOpacity(1); } else { fg[i].SetOpacity(0); }
+        if (i < lit_b) { fb[i].SetOpacity(1); } else { fb[i].SetOpacity(0); }
+      }
+  }
+
+Plymouth.SetBootProgressFunction(boot_progress_cb);

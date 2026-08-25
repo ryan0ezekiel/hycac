@@ -1,7 +1,7 @@
 #!/bin/bash
 # probe.sh - thorough HYCAC live-ISO interrogation over SSH
 # usage: probe.sh   -> prints PASS/FAIL table, exit code = number of failures
-SSH="ssh -p 2223 -i /tmp/opencode/vmtest-key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=6 hycac@localhost"
+SSH="ssh -p 2223 -i /home/helheim/.cache/hycac-test/vmtest-key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=6 hycac@localhost"
 
 pass=0; fail=0; failed_names=""
 

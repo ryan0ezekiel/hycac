@@ -1,10 +1,17 @@
 # HYCAC GRUB theme - mirrors the plymouth splash so the two screens read
-# as one: same canvas (#101015), same centered emblem, and a menu that
+# as one: same canvas (black), same centered emblem, and a menu that
 # occupies the progress bar's zone (bottom edge ~90%). Selecting an entry
 # hands the screen to plymouth, where that zone becomes the tribar.
 #
 # palette straight from the splash:
-#   bg      #101015  (plymouth implicit background)
+#   bg      #000000  (plymouth paints NO background - black fb shows
+#                    through; keep canvas black to match)
+#
+# RESOLUTION CONTRACT: grub.cfg forces gfxmode="1920x1080,auto". bg.png is
+# the plymouth watermark.png doubled onto a 3840x2160 black canvas, so the
+# exact /2 stretch renders the SAME bitmap at the SAME size and position
+# as plymouth does on EVERY panel (plymouth's watermark is fixed-pixel).
+# Do not swap bg.png for a svg re-render - the watermark IS the reference.
 #   emblem  #ECECF1  (watermark white)
 #   bar red #E5484D  (tribar fill -> selected entry)
 #   track   #26262C
@@ -13,11 +20,11 @@
 
 desktop-image: "bg.png"
 desktop-image-scale-method: "stretch"
-desktop-color: "#101015"
+desktop-color: "#000000"
 
 + boot_menu {
     left = 23%
-    top = 62%
+    top = 68%   # entries sit between emblem bottom (~67%) and plymouth's bar zone (90%)
     width = 54%
     height = 240
 

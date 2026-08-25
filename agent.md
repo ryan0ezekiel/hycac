@@ -97,12 +97,20 @@ bash -lc '<script>'
   color opaque into the PNG (bg.png is solid #101015 + emblem).
 * The brand mark in `theme/hycac/bg.png` is rendered from
   `branding/hycac.svg` via rsvg-convert (recolored #ECECF1), NOT upscaled
-  raster. Current recipe: render at ~558×648, paste centered-x /
-  center-y at 38% on a solid #101015 3840×2160 canvas.
+  raster. Current recipe: recolor svg `<g>` → `<g fill="#ECECF1">`,
+  render at ~558×648, paste centered-x / center-y at 38% height on a
+  solid BLACK (#000000) 3840×2160 canvas.
+* PLYMOUTH PAINTS NO BACKGROUND - hycac.script deliberately never calls
+  Window.SetBackgroundTopColor/BottomColor so the splash is white bits +
+  tribar floating over whatever the framebuffer holds (black in VMs,
+  vendor logo via GOP/BGRT on real hardware). Therefore GRUB's canvas
+  must be plain black - do NOT use #101015 or any other charcoal; that
+  shade belonged to the OLD opaque watermark rectangle (the grey-box
+  bug) and is not a brand color.
 * The menu is styled to mirror the plymouth tribar zone: unselected text
-  #ECECF1 (emblem white), selected text #E5484D (bar red) over a faint
-  red wash select_*.png rgba(229,72,77,50) - over #101015 that wash
-  reads as ~(58,31,32) in screendumps. Font is JetBrains Mono Regular 18
+  #ECECF1 (emblem white), selected entry #E5484D (bar red) over a faint
+  red wash select_*.png rgba(229,72,77,50) - over black that wash reads
+  as ~(45,14,15) in screendumps. Font is JetBrains Mono Regular 18
   pre-rendered to pf2 (grub-mkfont, committed) - zero extra ISO packages.
 * mkarchiso copies non-`.cfg` files under profile `grub/` recursively to
   ISO `/boot/grub/` — fonts and themes ship fine, just don't rename.
@@ -157,3 +165,25 @@ git -c user.name=helheim -c user.email=helheim@hycac.local commit
 
 Never commit `out/`, `work/`, `*.iso`, or `plugins/sources/` (all
 gitignored).
+
+**Host scratch hygiene**
+* `/tmp/opencode` is volatile tmpfs and has eaten files under pressure
+  (lost the ssh test key once). Durable copies of vmtest-key(.pub) and
+  inject.sh live in `~/.cache/hycac-test/`; `/tmp/opencode/...` entries
+  are symlinks. If ssh auth suddenly fails after a session gap, check
+  the symlinks first.
+
+**GRUB multi-panel sharpness (1080p + 4K machines)**
+* GRUB CANNOT read the active framebuffer resolution: videoinfo prints to
+  console only, and $gfxmode merely echoes what you set. Any plan that
+  needs "detect panel, pick image" is dead on arrival.
+* desktop-image-scale-method: crop is COVER-FIT (uniform scale-up/down,
+  centered, overflow cropped) - NOT a native-pixel blit. Verified by
+  calibration grid.
+* Therefore: force `set gfxmode="1920x1080,auto"` in grub.cfg (GOP on 4K
+  panels universally offers 1920x1080) and anchor all artwork to that.
+  bg.png = plymouth watermark.png resized x2 on a black 3840x2160 canvas;
+  the /2 stretch yields the identical bitmap at identical size/position
+  as plymouth on both machines. Integer downscale = retina-sharp.
+* Menu top=68% keeps entries between the emblem's lower piece (~y721) and
+  plymouth's bar zone start (90%).

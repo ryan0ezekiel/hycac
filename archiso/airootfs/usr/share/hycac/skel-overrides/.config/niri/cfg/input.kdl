@@ -11,6 +11,7 @@ input {
 
     touchpad {
         tap // Enable tap-to-click
+        dwt // Disable touchpad while typing
         natural-scroll // Enable natural (macOS-style) scrolling
     }
 

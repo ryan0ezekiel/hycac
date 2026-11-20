@@ -16,7 +16,7 @@ binds {
     Mod+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "noctalia msg session lock"; }
     Mod+Shift+Q                         hotkey-overlay-title="Session Menu: noctalia sessionMenu" { spawn-sh "noctalia msg panel-toggle session"; }
     Mod+A                               hotkey-overlay-title="Open Terminal: alacritty" { spawn "alacritty"; }
-    Mod+S                               hotkey-overlay-title="Open Terminal: ghostty" { spawn "ghostty"; }
+    Mod+S                               hotkey-overlay-title="Open Noctalia Settings" { spawn "noctalia" "msg" "settings-open"; }
     Mod+D                               hotkey-overlay-title="Open Terminal: foot" { spawn "foot"; }
     Mod+Z                               hotkey-overlay-title="Open Editor: zeditor" { spawn "zeditor"; }
 
@@ -112,7 +112,7 @@ binds {
     Mod+F1                             { focus-workspace-previous; }
 
     // ─── Layout Controls ───
-    Mod+CTRL+F                          { expand-column-to-available-width; }
+    Mod+Shift+F                          { expand-column-to-available-width; }
     Mod+C                               { center-column; }
     Mod+CTRL+C                          { center-visible-columns; }
     Mod+Minus                           { set-column-width "-10%"; }
